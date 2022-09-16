@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
   publicKey: PublicKey;
+  id: Field;
   creditScore: Field;
   signature: Signature;
 };
@@ -22,7 +23,12 @@ export default async function handler(
   const randomCreditScore = () => Math.floor(Math.random() * 551 + 300);
   const creditScore = Field(randomCreditScore());
 
-  const signature = Signature.create(privateKey, [creditScore]);
+  const callerUserId = Array.isArray(req.query.id)
+    ? req.query.id[0]
+    : req.query.id ?? "22";
 
-  res.status(200).json({ publicKey, creditScore, signature });
+  const id = Field(callerUserId);
+  const signature = Signature.create(privateKey, [id, creditScore]);
+
+  res.status(200).json({ publicKey, id, creditScore, signature });
 }
