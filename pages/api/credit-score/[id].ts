@@ -18,16 +18,17 @@ export default async function handler(
     process.env.PRIVATE_KEY ??
       "EKF65JKw9Q1XWLDZyZNGysBbYG21QbJf3a4xnEoZPZ28LKYGMw53"
   );
-  const publicKey = privateKey.toPublicKey();
-
-  const randomCreditScore = () => Math.floor(Math.random() * 551 + 300);
-  const creditScore = Field(randomCreditScore());
 
   const callerUserId = Array.isArray(req.query.id)
     ? req.query.id[0]
-    : req.query.id ?? "22";
+    : req.query.id ?? "1";
 
+  // const randomCreditScore = () => Math.floor(Math.random() * 551 + 300);
+  const knownCreditScore = (id: string) => (id === "1" ? 787 : 536);
+
+  const publicKey = privateKey.toPublicKey();
   const id = Field(callerUserId);
+  const creditScore = Field(knownCreditScore(callerUserId));
   const signature = Signature.create(privateKey, [id, creditScore]);
 
   res.status(200).json({ publicKey, id, creditScore, signature });
