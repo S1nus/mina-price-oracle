@@ -53,18 +53,6 @@ export default async function handler(
       "EKF65JKw9Q1XWLDZyZNGysBbYG21QbJf3a4xnEoZPZ28LKYGMw53"
   );
 
-  // `res.query.id` can be a string or an array of strings. We need to check
-  // which it is, and convert it to a single string (by grabbing the first
-  // element) if it is an array. If the request is undefined then we will assign
-  // `callerUserId` to the string "1".
-  /*const callerUserId = Array.isArray(req.query.id)
-    ? req.query.id[0]
-    : req.query.id ?? "1";
-
-  // We get the users credit score. In this case it's 787 for user 1, and 536
-  // for anybody else :)
-  const knownCreditScore = (id: string) => (id === "1" ? 787 : 536);*/
-
   // denominate the price in units of 0.0001, for easy conversion to and from Fields
   let price = await getPrice();
   price = Math.floor(parseFloat(price).toFixed(4) * 10000);
@@ -76,14 +64,6 @@ export default async function handler(
   // We compute the public key associated with our private key
   const publicKey = privateKey.toPublicKey();
 
-  // Define a Field with the value of the users id
-  //const id = Field(callerUserId);
-
-  // Define a Field with the users credit score
-  //const creditScore = Field(knownCreditScore(callerUserId));
-
-  // Use our private key to sign an array of Fields containing the users id and
-  // credit score
   const signature = Signature.create(privateKey, [priceField, heightField]);
 
   // Return the Data type that we created earlier
