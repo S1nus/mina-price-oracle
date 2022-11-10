@@ -14,7 +14,7 @@ async function getPrice() {
   try {
     const response = await axios.get('https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?slug=mina', {
       headers: {
-        'X-CMC_PRO_API_KEY': '11018c6a-ff23-4be4-9506-1de75cbc2cb7',
+        'X-CMC_PRO_API_KEY': 'XXXXXXXXX',
       },
     });
     const data = await response.data;
